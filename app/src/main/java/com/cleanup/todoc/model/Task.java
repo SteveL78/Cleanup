@@ -1,12 +1,14 @@
 package com.cleanup.todoc.model;
 
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.ForeignKey;
-import android.arch.persistence.room.PrimaryKey;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.ForeignKey;
+import androidx.room.PrimaryKey;
 
 import java.util.Comparator;
+import java.util.Date;
 
 /**
  * <p>Model for the tasks of the application.</p>
@@ -30,6 +32,7 @@ public class Task {
     /**
      * The unique identifier of the project associated to the task
      */
+    @ColumnInfo(name = "projectId")
     private long projectId;
 
     /**
@@ -124,6 +127,7 @@ public class Task {
         this.name = name;
     }
 
+
     /**
      * Sets the timestamp when the task has been created.
      *
@@ -132,6 +136,26 @@ public class Task {
     private void setCreationTimestamp(long creationTimestamp) {
         this.creationTimestamp = creationTimestamp;
     }
+
+
+
+
+
+
+    public static Task[] getAllTasks() {
+        return new Task[] {
+                new Task(1, 1, "task 1", new Date().getTime()),
+                new Task(2, 2, "task 2", new Date().getTime()),
+                new Task(3, 3, "task 3", new Date().getTime()),
+                new Task(4, 3, "task 4", new Date().getTime())
+        };
+    }
+
+
+
+
+
+
 
     /**
      * Comparator to sort task from A to Z

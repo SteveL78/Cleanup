@@ -1,10 +1,10 @@
 package com.cleanup.todoc.model;
 
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.PrimaryKey;
-import android.support.annotation.ColorInt;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
 /**
  * <p>Models for project in which tasks are included.</p>
@@ -13,7 +13,7 @@ import android.support.annotation.Nullable;
  */
 
 // 1 - Définir Task comme étant une table grâce à l'annotation @Entity
-@Entity
+@Entity (tableName = "Project")
 public class Project {
     /**
      * The unique identifier of the project
