@@ -9,12 +9,18 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.RoomDatabase;
 
 import com.cleanup.todoc.R;
+import com.cleanup.todoc.database.CleanUpDatabase;
+import com.cleanup.todoc.database.dao.TaskDao;
 import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.model.Task;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.security.auth.callback.Callback;
 
 /**
  * <p>Adapter which handles the list of tasks to display in the dedicated RecyclerView.</p>
@@ -22,11 +28,18 @@ import java.util.List;
  * @author Gaëtan HERFRAY
  */
 public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHolder> {
+
+    /**
+     * The list of projects the adapter deals with
+     */
+    @NonNull
+    private List<Project> projects = new ArrayList<Project>();
+
     /**
      * The list of tasks the adapter deals with
      */
     @NonNull
-    private List<Task> tasks;
+    private List<Task> tasks = new ArrayList<Task>();
 
     /**
      * The listener for when a task needs to be deleted
@@ -39,7 +52,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
      *
      * @param tasks the list of tasks the adapter deals with to set
      */
-    TasksAdapter(@NonNull final List<Task> tasks, @NonNull final DeleteTaskListener deleteTaskListener) {
+    TasksAdapter(@NonNull final DeleteTaskListener deleteTaskListener) {
         this.tasks = tasks;
         this.deleteTaskListener = deleteTaskListener;
     }
@@ -49,10 +62,14 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
      *
      * @param tasks the list of tasks the adapter deals with to set
      */
-    void updateTasks(@NonNull final List<Task> tasks) {
+    void updateTasks(@NonNull final List<Task> tasks, List<Project> projects) {
         this.tasks = tasks;
+        this.projects = projects;
         notifyDataSetChanged();
+
     }
+
+
 
     @NonNull
     @Override
@@ -141,7 +158,15 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
             lblTaskName.setText(task.getName());
             imgDelete.setTag(task);
 
-            final Project taskProject = task.getProject();
+
+            final long taskProjectId = task.getProjectId();
+            Project taskProject = null;
+            for (Project project : projects){
+                if(taskProjectId == project.getId()){
+                    taskProject = project;
+                }
+
+            }
             if (taskProject != null) {
                 imgProject.setSupportImageTintList(ColorStateList.valueOf(taskProject.getColor()));
                 lblProjectName.setText(taskProject.getName());

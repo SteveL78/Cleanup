@@ -2,7 +2,6 @@ package com.cleanup.todoc.ui;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.cleanup.todoc.R;
 import com.cleanup.todoc.database.CleanUpDatabase;
+import com.cleanup.todoc.database.dao.ProjectDao;
 import com.cleanup.todoc.database.dao.TaskDao;
 import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.model.Task;
@@ -30,6 +30,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+
 /**
  * <p>Home activity of the application which is displayed when the user opens the app.</p>
  * <p>Displays the list of tasks.</p>
@@ -38,9 +39,10 @@ import java.util.List;
  */
 public class MainActivity extends AppCompatActivity implements TasksAdapter.DeleteTaskListener {
     /**
-     * List of all projects available in the application
+     * List of all current projects of the application
      */
-    private final Project[] allProjects = Project.getAllProjects();
+    @NonNull
+    private ArrayList projects = new ArrayList<>();
 
     /**
      * List of all current tasks of the application
@@ -51,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     /**
      * The adapter which handles the list of tasks
      */
-    private final TasksAdapter adapter = new TasksAdapter(tasks, this);
+    private TasksAdapter adapter = new TasksAdapter(this);
 
     /**
      * The sort method to be used to display tasks
@@ -93,6 +95,9 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     @NonNull
     private TextView lblNoTasks;
 
+    private TaskDao taskDao;
+    private ProjectDao projectDao;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,18 +111,18 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         listTasks.setAdapter(adapter);
 
         CleanUpDatabase c = CleanUpDatabase.getInstance(this);
-        TaskDao taskDao = c.taskDao();
+        taskDao = c.taskDao();
         List<Task> listTask = taskDao.getTaskList();
 
-        this.tasks = new ArrayList<Task>(listTask);
+        this.tasks = new ArrayList<>(listTask);
         updateTasks();
 
+        projectDao = c.projectDao();
+        List<Project> listProject = projectDao.getProjectList();
+        this.projects = new ArrayList<>(listProject);
 
-        //adapter.updateTasks(listTask);
 
-        Log.d("Steve", String.valueOf(listTask.size()));
-
-
+        adapter.updateTasks(this.tasks, this.projects);
 
 
         findViewById(R.id.fab_add_task).setOnClickListener(new View.OnClickListener() {
@@ -128,6 +133,8 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         });
     }
 
+
+    // ------------- MENU -------------
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.actions, menu);
@@ -155,10 +162,14 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
 
     @Override
     public void onDeleteTask(Task task) {
+        taskDao.deleteTask(task.getId());
         tasks.remove(task);
         updateTasks();
     }
 
+
+
+    // ------------- POPUP AJOUTER UNE TASK -------------
     /**
      * Called when the user clicks on the positive button of the Create Task Dialog.
      *
@@ -228,6 +239,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
      * @param task the task to be added to the list
      */
     private void addTask(@NonNull Task task) {
+        taskDao.insertTask(task);
         tasks.add(task);
         updateTasks();
     }
@@ -257,7 +269,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
                     break;
 
             }
-            adapter.updateTasks(tasks);
+            adapter.updateTasks(tasks, projects);
         }
     }
 
@@ -308,7 +320,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
      * Sets the data of the Spinner with projects to associate to a new task
      */
     private void populateDialogSpinner() {
-        final ArrayAdapter<Project> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, allProjects);
+        final ArrayAdapter<Project> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, projectDao.getProjectList());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         if (dialogSpinner != null) {
             dialogSpinner.setAdapter(adapter);

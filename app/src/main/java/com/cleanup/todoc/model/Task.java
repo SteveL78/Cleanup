@@ -98,15 +98,6 @@ public class Task {
         return projectId;
     }
 
-    /**
-     * Returns the project associated to the task.
-     *
-     * @return the project associated to the task
-     */
-    @Nullable
-    public Project getProject() {
-        return Project.getProjectById(projectId);
-    }
 
     /**
      * Returns the name of the task.
@@ -136,25 +127,6 @@ public class Task {
     private void setCreationTimestamp(long creationTimestamp) {
         this.creationTimestamp = creationTimestamp;
     }
-
-
-
-
-
-
-    public static Task[] getAllTasks() {
-        return new Task[] {
-                new Task(1, 1, "task 1", new Date().getTime()),
-                new Task(2, 2, "task 2", new Date().getTime()),
-                new Task(3, 3, "task 3", new Date().getTime()),
-                new Task(4, 3, "task 4", new Date().getTime())
-        };
-    }
-
-
-
-
-
 
 
     /**
