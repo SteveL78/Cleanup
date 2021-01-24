@@ -28,7 +28,6 @@ public abstract class CleanUpDatabase extends RoomDatabase {
 
     // --- DAO ---
     public abstract ProjectDao projectDao();
-
     public abstract TaskDao taskDao();
 
     // --- INSTANCE ---
@@ -71,7 +70,7 @@ public abstract class CleanUpDatabase extends RoomDatabase {
 
         for (Project project : allProjects) {
             ContentValues contentValues = new ContentValues();
-            contentValues.put("id", project.getId());   // Je récupère l'Id du projet selon sa position ...
+            contentValues.put("id", project.getId());   // Je récupère l'Id du projet ...
             contentValues.put("name", project.getName());   // ... ainsi que son nom ...
             contentValues.put("color", project.getColor());  //... et sa couleur...
             db.insert("Project", OnConflictStrategy.IGNORE, contentValues); // ... et je l'insère ou l'ignore si déjà existant.

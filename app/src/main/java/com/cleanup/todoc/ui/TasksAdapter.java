@@ -55,6 +55,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
     TasksAdapter(@NonNull final DeleteTaskListener deleteTaskListener) {
         this.tasks = tasks;
         this.deleteTaskListener = deleteTaskListener;
+
     }
 
     /**
@@ -147,6 +148,12 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
             lblProjectName = itemView.findViewById(R.id.lbl_project_name);
             imgDelete = itemView.findViewById(R.id.img_delete);
 
+            imgDelete.setOnClickListener(view -> {
+                final Object tag = view.getTag();
+                if (tag instanceof Task) {
+                    TaskViewHolder.this.deleteTaskListener.onDeleteTask((Task) tag);
+                }
+            });
         }
 
         /**
@@ -175,13 +182,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
                 lblProjectName.setText("");
             }
 
-            imgDelete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    TaskViewHolder.this.deleteTaskListener.onDeleteTask(task);
-
-                }
-            });
+            imgDelete.setOnClickListener(view -> TaskViewHolder.this.deleteTaskListener.onDeleteTask(task));
         }
     }
 }

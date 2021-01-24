@@ -1,5 +1,6 @@
 package com.cleanup.todoc.database.dao;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
@@ -17,15 +18,13 @@ import java.util.List;
 public interface TaskDao {
 
     @Query("SELECT * FROM Task")
-    List<Task> getTaskList();
-
-
-
-   /* @Query("SELECT * FROM Task")
-    LiveData<List<Task>> getTaskList();*/
+    LiveData<List<Task>> getTaskList();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertTask(Task task);
+
+    @Update
+    void updateTask(Task task);
 
     @Query("DELETE FROM Task WHERE id = :taskId")
     int deleteTask(long taskId);

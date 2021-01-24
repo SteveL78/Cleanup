@@ -19,11 +19,11 @@ import java.util.List;
 @Dao
 public interface ProjectDao {
 
-    @Query("SELECT * FROM Project")
-    List<Project> getProjectList();
+    /*@Query("SELECT * FROM Project")
+    List<Project> getProjectList();*/
 
 
-    /*@Query("SELECT * FROM Project WHERE id = :projectId")
-    LiveData<Project> getProject(long projectId);*/
+    @Query("SELECT * FROM Project WHERE id = :projectId")
+    LiveData<Project> getProject(long projectId);
 
 }
