@@ -7,3 +7,6 @@
 /captures
 .externalNativeBuild
 /gradle
+/native
+/deamon
+/build-scan-data
