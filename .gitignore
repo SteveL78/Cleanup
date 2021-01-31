@@ -8,5 +8,8 @@
 .externalNativeBuild
 /gradle
 /native
-/deamon
+/daemon
 /build-scan-data
+
+/caches
+
