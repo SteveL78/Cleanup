@@ -1,4 +1,4 @@
-package com.cleanup.todoc.ui;
+package com.cleanup.todoc.viewModel;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
@@ -34,7 +34,9 @@ public class MainViewModel extends ViewModel {
     // FOR PROJECT
     // -------------
 
-    public LiveData<Project> getAllProject(long projectId) { return projectDataSource.getProject(projectId); }
+    public LiveData<List<Project>> getAllProject() {
+        return projectDataSource.getProjectList();
+    }
 
     // -------------
     // FOR TASK
@@ -55,4 +57,6 @@ public class MainViewModel extends ViewModel {
     public void updateTask(Task task) {
         executor.execute(() -> taskDataSource.updateTask(task));
     }
+
+
 }

@@ -21,13 +21,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cleanup.todoc.R;
-import com.cleanup.todoc.database.CleanUpDatabase;
-import com.cleanup.todoc.database.dao.ProjectDao;
-import com.cleanup.todoc.database.dao.TaskDao;
 import com.cleanup.todoc.injections.Injection;
 import com.cleanup.todoc.injections.ViewModelFactory;
 import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.model.Task;
+import com.cleanup.todoc.viewModel.MainViewModel;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -100,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     @NonNull
     private TextView lblNoTasks;
 
-    private MainViewModel mMainViewModel ;
+    private MainViewModel mMainViewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -117,37 +115,29 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
 
 
         configureViewModel();
-        // getAllProjects();
+        //getAllProject();
 
-        final Observer<List<Task>> taskListObserver = task -> {
+        final Observer<List<Task>> taskListObserver = tasks -> {
             // Update the UI, in this case, a TextView.
-            tasks = new ArrayList(Objects.requireNonNull(task));
+            this.tasks = new ArrayList(Objects.requireNonNull(tasks));
             updateTasks();
-            adapter.updateTasks(tasks, projects);
-
+            adapter.updateTasks(this.tasks, projects);
         };
-
         mMainViewModel.getTasks().observe(this, taskListObserver);
 
-        //  TODO CREATE PROJECT LIST OBSERVER AND OBSERVE
 
-        final Observer<List<Project>> projectListObserver = project -> {
+
+        final Observer<List<Project>> projectListObserver = projects -> {
             // Update the UI, in this case, a TextView.
-            projects = new ArrayList(project);
+            this.projects = new ArrayList(Objects.requireNonNull(projects));
             updateTasks();
-            adapter.updateTasks(tasks, projects);
-
+            adapter.updateTasks(tasks, this.projects);
         };
-
-
-
+        mMainViewModel.getAllProject().observe(this, projectListObserver);
 
 
         findViewById(R.id.fab_add_task).setOnClickListener(view -> showAddTaskDialog());
     }
-
-
-
 
 
     // -------------------
@@ -171,17 +161,18 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     // -------------------
 
     // 2 - Configuring ViewModel
-    private void configureViewModel(){
+    private void configureViewModel() {
         ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(this);
         this.mMainViewModel = ViewModelProviders.of(this, mViewModelFactory).get(MainViewModel.class);
     }
 
 
+
    /* private void getAllProjects() {
         this.mMainViewModel.getAllProject().observe(this, updateProjectList(projects));
-    }
+    }/*
 
-    private void updateProjectList(List<Project> projects){
+    /*private void updateProjectList(List<Project> projects){
         this.projects = projects;
         updateTasks();
     }*/
@@ -283,6 +274,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
 
 
     // ------------- POPUP AJOUTER UNE TASK -------------
+
     /**
      * Called when the user clicks on the positive button of the Create Task Dialog.
      *
@@ -322,7 +314,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
                 dialogInterface.dismiss();
             }
             // If name has been set, but project has not been set (this should never occur)
-            else{
+            else {
                 dialogInterface.dismiss();
             }
         }
@@ -345,7 +337,6 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
 
         populateDialogSpinner();
     }
-
 
 
     /**

@@ -24,7 +24,9 @@ public class Injection {
         return new ProjectRepository(database.projectDao());
     }
 
-    public static Executor provideExecutor(){ return Executors.newSingleThreadExecutor(); }
+    public static Executor provideExecutor() {
+        return Executors.newSingleThreadExecutor();
+    }
 
     public static ViewModelFactory provideViewModelFactory(Context context) {
         TaskRepository dataSourceTask = provideTaskDataSource(context);

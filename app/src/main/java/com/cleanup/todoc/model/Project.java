@@ -2,7 +2,6 @@ package com.cleanup.todoc.model;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -13,7 +12,7 @@ import androidx.room.PrimaryKey;
  */
 
 // 1 - Définir Task comme étant une table grâce à l'annotation @Entity
-@Entity (tableName = "Project")
+@Entity(tableName = "Project")
 public class Project {
     /**
      * The unique identifier of the project
@@ -46,7 +45,6 @@ public class Project {
         this.name = name;
         this.color = color;
     }
-
 
 
     /**
