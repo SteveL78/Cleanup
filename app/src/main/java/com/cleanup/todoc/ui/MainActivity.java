@@ -126,7 +126,6 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         mMainViewModel.getTasks().observe(this, taskListObserver);
 
 
-
         final Observer<List<Project>> projectListObserver = projects -> {
             // Update the UI, in this case, a TextView.
             this.projects = new ArrayList(Objects.requireNonNull(projects));
@@ -140,27 +139,8 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     }
 
 
-    // -------------------
-    // ACTIONS
-    // -------------------
 
-   /* @OnClick(R.id.todo_list_activity_button_add)
-    public void onClickAddButton() {
-        // 7 - Create item after user clicked on button
-        this.createItem();
-    }
 
-    @Override
-    public void onClickDeleteButton(int position) {
-        // 7 - Delete task after user clicked on button
-        this.deleteTask(this.adapter.getTask(position));
-    }*/
-
-    // -------------------
-    // DATA
-    // -------------------
-
-    // 2 - Configuring ViewModel
     private void configureViewModel() {
         ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(this);
         this.mMainViewModel = ViewModelProviders.of(this, mViewModelFactory).get(MainViewModel.class);
@@ -168,74 +148,6 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
 
 
 
-   /* private void getAllProjects() {
-        this.mMainViewModel.getAllProject().observe(this, updateProjectList(projects));
-    }/*
-
-    /*private void updateProjectList(List<Project> projects){
-        this.projects = projects;
-        updateTasks();
-    }*/
-
-    /*private void getTasks() {
-        mMainViewModel.getTasks().observe(this, updateTasks());
-    }*/
-    // 3 - Get Current Project
-   /* private void getCurrentProject(long projectId){
-        this.taskViewModel.getProject(projectId).observe(this, this::updateHeader);
-    }*/
-
-    // ---
-
-    // 3 - Get all tasks for a project
-    /*private void getTasks(int projectId){
-        this.taskViewModel.getTasks(projectId).observe(this, this::updateTaskList);
-    }*/
-
-    // 3 - Create a new task
-    /*private void createItem(){
-        Item item = new Item(this.editText.getText().toString(), this.spinner.getSelectedItemPosition(), USER_ID);
-        this.editText.setText("");
-        this.itemViewModel.createItem(item);
-    }*/
-
-    // ------ DELETE A TASK ------
-   /* @Override
-    public void onDeleteTask(Task task) {
-        mMainViewModel.deleteTask(task.getId());
-        mMainViewModel.getTasks().observe(this, updateTasks());
-    }*/
-
-    // 3 - Update an task (selected or not)x
-    /*private void updateTask(Task task){
-        task.setSelected(!task.getSelected());
-        this.taskViewModel.updateTask(task);
-    }*/
-
-    // -------------------
-    // UI
-    // -------------------
-
-
-    // 4 - Configure RecyclerView
-   /* private void configureRecyclerView(){
-        this.adapter = new ItemAdapter(this);
-        this.recyclerView.setAdapter(this.adapter);
-        this.recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        ItemClickSupport.addTo(recyclerView, R.layout.activity_todo_list_item)
-                .setOnItemClickListener((recyclerView1, position, v) -> this.updateItem(this.adapter.getItem(position)));
-    }
-
-    // 5 - Update header (username & picture)
-    private void updateHeader(User user){
-        this.profileText.setText(user.getUsername());
-        Glide.with(this).load(user.getUrlPicture()).apply(RequestOptions.circleCropTransform()).into(this.profileImage);
-    }
-
-    // 6 - Update the list of items
-    private void updateItemsList(List<Item> items){
-        this.adapter.updateData(items);
-    }*/
 
     // ------------- MENU -------------
     @Override

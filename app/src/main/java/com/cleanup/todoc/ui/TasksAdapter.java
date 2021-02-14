@@ -9,18 +9,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.RoomDatabase;
 
 import com.cleanup.todoc.R;
-import com.cleanup.todoc.database.CleanUpDatabase;
-import com.cleanup.todoc.database.dao.TaskDao;
 import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.model.Task;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.security.auth.callback.Callback;
 
 /**
  * <p>Adapter which handles the list of tasks to display in the dedicated RecyclerView.</p>
