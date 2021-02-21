@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
 
-import com.cleanup.todoc.R;
 import com.cleanup.todoc.ui.MainActivity;
 
 import org.junit.Rule;

@@ -79,7 +79,7 @@ public class Task {
      *
      * @param id the unique idenifier of the task to set
      */
-    private void setId(long id) {
+    public void setId(long id) {
         this.id = id;
     }
 

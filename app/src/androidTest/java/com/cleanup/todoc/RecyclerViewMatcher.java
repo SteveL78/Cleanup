@@ -14,7 +14,7 @@ import java.util.Objects;
 /**
  * Created by dannyroa on 5/10/15.
  *
- * @see https://github.com/dannyroa/espresso-samples/blob/master/RecyclerView/app/src/androidTest/java/com/dannyroa/espresso_samples/recyclerview/RecyclerViewMatcher.java
+ * @see //https://github.com/dannyroa/espresso-samples/blob/master/RecyclerView/app/src/androidTest/java/com/dannyroa/espresso_samples/recyclerview/RecyclerViewMatcher.java
  */
 public class RecyclerViewMatcher {
     private final int recyclerViewId;

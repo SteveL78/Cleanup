@@ -1,13 +1,16 @@
 package com.cleanup.todoc;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
-import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.room.Room;
+import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
+import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.cleanup.todoc.database.CleanUpDatabase;
 import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.model.Task;
 
-import org.junit.Assert;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,16 +18,21 @@ import org.junit.runner.RunWith;
 import java.util.Date;
 import java.util.List;
 
-import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by Steve LEROY on 2/14/21.
  */
-@RunWith(AndroidJUnit4.class)
-class TaskDaoTest {
+@RunWith(AndroidJUnit4ClassRunner.class)
+public class TaskDaoTest {
+
+    // FOR DATA
+    private CleanUpDatabase database;
 
     // DATA SET FOR TEST
- /*   private static long TASK_ID = 1;
+    private static long TASK_ID = 1;
+    private static long NEW_TASK_ID = 31;
     private static long PROJECT_ID = 1;
     private static Project PROJECT_DEMO = new Project(PROJECT_ID, "FirstProjectTest", 0xFFFFFF);
     private static Task TASK_DEMO = new Task(TASK_ID, PROJECT_DEMO.getId(), "TaskTest1", new Date().getTime());
@@ -32,42 +40,52 @@ class TaskDaoTest {
 
     @Rule
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
-    private CleanUpDatabase database;
 
+    @Before
+    public void initDb() throws Exception {
+        this.database = Room.inMemoryDatabaseBuilder(InstrumentationRegistry.getInstrumentation().getContext(),
+                CleanUpDatabase.class)
+                .allowMainThreadQueries()
+                .build();
+    }
+
+    @After
+    public void closeDb() throws Exception {
+        database.close();
+    }
 
     @Test
-    public void insertAndGetTask() throws InterruptedException {
-        // BEFORE : Adding a new task
-        this.database.taskDao().insertTask(TASK_DEMO);
+    public void getTasksWhenNoItemInserted() throws InterruptedException {
         // TEST
         List<Task> tasks = LiveDataTestUtil.getValue(this.database.taskDao().getTaskList());
-        Assert.assertTrue(tasks.get(0).getId() == TASK_DEMO.getId()
-                && tasks.get(0).getName().equals(TASK_DEMO.getName())
-                && tasks.get(0).getProjectId() == TASK_DEMO.getProjectId()
-                && tasks.get(0).getCreationTimestamp() == TASK_DEMO.getCreationTimestamp());
+        assertTrue(tasks.isEmpty());
     }
-
 
     @Test
-    public void getTasksWhenNoTaskInserted() throws InterruptedException {
-        List<Task> tasks = LiveDataTestUtil.getValue(this.database.taskDao().getTaskList());
-        Assert.assertTrue(tasks.isEmpty());
+    public void insertAndGetTasks() throws InterruptedException {
+        this.database.taskDao().insertTask(TASK_DEMO);
+        //TEST
+        List<Task> taskList = LiveDataTestUtil.getValue(this.database.taskDao().getTaskList());
+        assertTrue(taskList.get(0).getId() == TASK_DEMO.getId()
+                && taskList.get(0).getName().equals(TASK_DEMO.getName())
+                && taskList.get(0).getProjectId() == TASK_DEMO.getProjectId()
+                && taskList.get(0).getCreationTimestamp() == TASK_DEMO.getCreationTimestamp());
     }
-
 
     @Test
     public void insertAndUpdateTask() throws InterruptedException {
-        // BEFORE : Adding demo project & demo taskList. Next, update item added & re-save it
         this.database.taskDao().insertTask(TASK_DEMO);
-        this.database.taskDao().insertTask(NEW_TASK_DEMO);
-        Task taskAdded = LiveDataTestUtil.getValue(this.database.taskDao().getTaskList(TASK_ID)).get(0);
-        taskAdded.setSelected(true);
-        this.database.taskDao().updateTask(taskAdded);
-
-        //TEST
-        List<Task> taskList = LiveDataTestUtil.getValue(this.database.taskDao().getTaskList(TASK_ID));
-        assertTrue(taskList.size() == 1 && taskList.get(0).getSelected());
+        TASK_DEMO.setId(NEW_TASK_ID);
+        this.database.taskDao().updateTask(TASK_DEMO);
+        List<Task> tasks = LiveDataTestUtil.getValue(this.database.taskDao().getTaskList());
+        assertEquals(NEW_TASK_ID, tasks.get(0).getId());
     }
 
-*/
+    @Test
+    public void insertAndDeleteTask() throws InterruptedException {
+        this.database.taskDao().insertTask(TASK_DEMO);
+        this.database.taskDao().deleteTask(TASK_ID);
+        List<Task> tasks = LiveDataTestUtil.getValue(this.database.taskDao().getTaskList());
+        assertTrue(tasks.isEmpty());
+    }
 }

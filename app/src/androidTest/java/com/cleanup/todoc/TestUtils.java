@@ -91,7 +91,7 @@ public class TestUtils {
             this.position = position;
         }
 
-        public Matcher<View> getConstraints() {
+        public Matcher getConstraints() {
             return Matchers.allOf(new Matcher[]{
                     ViewMatchers.isAssignableFrom(RecyclerView.class), ViewMatchers.isDisplayed()
             });

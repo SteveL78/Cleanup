@@ -17,8 +17,6 @@ import static org.junit.Assert.assertSame;
  */
 public class TaskUnitTest {
 
-
-
     @Test
     public void test_az_comparator() {
         final Task task1 = new Task(1, 1, "aaa", 123);
