@@ -26,7 +26,7 @@ import static junit.framework.TestCase.assertEquals;
  * Created by Steve LEROY on 2/14/21.
  */
 @RunWith(AndroidJUnit4ClassRunner.class)
-class TaskUnitTest {
+class ProjectDaoTest {
 
     private TaskDao mTaskDao;
     private ProjectDao mProjectDao;
