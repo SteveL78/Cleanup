@@ -14,10 +14,14 @@ public class ProjectRepository {
 
     private final ProjectDao projectDao;
 
-    public ProjectRepository(ProjectDao projectDao) { this.projectDao = projectDao; }
+    public ProjectRepository(ProjectDao projectDao) {
+        this.projectDao = projectDao;
+    }
 
     // --- GET PROJECT ---
 
-    public LiveData<List<Project>> getProjectList() { return this.projectDao.getProjectList(); }
+    public LiveData<List<Project>> getProjectList() {
+        return this.projectDao.getProjectList();
+    }
 
 }

@@ -28,6 +28,7 @@ public abstract class CleanUpDatabase extends RoomDatabase {
 
     // --- DAO ---
     public abstract ProjectDao projectDao();
+
     public abstract TaskDao taskDao();
 
     // --- INSTANCE ---

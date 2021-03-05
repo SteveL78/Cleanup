@@ -1,7 +1,13 @@
 package com.cleanup.todoc;
 
+import android.content.ContentValues;
+
+import androidx.annotation.NonNull;
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Room;
+import androidx.room.RoomDatabase;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
 import androidx.test.platform.app.InstrumentationRegistry;
 
@@ -46,8 +52,30 @@ public class TaskDaoTest {
         this.database = Room.inMemoryDatabaseBuilder(InstrumentationRegistry.getInstrumentation().getContext(),
                 CleanUpDatabase.class)
                 .allowMainThreadQueries()
+                .addCallback(prepopulateDatabase())
                 .build();
     }
+
+    private static RoomDatabase.Callback prepopulateDatabase() {
+        return new RoomDatabase.Callback() {
+
+            @Override
+            public void onCreate(@NonNull SupportSQLiteDatabase db) {
+                super.onCreate(db);
+
+                prepopulateWithProjects(db);
+            }
+        };
+    }
+
+    private static void prepopulateWithProjects(SupportSQLiteDatabase db) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("id", PROJECT_DEMO.getId());   // Je récupère l'Id du projet ...
+        contentValues.put("name", PROJECT_DEMO.getName());   // ... ainsi que son nom ...
+        contentValues.put("color", PROJECT_DEMO.getColor());  //... et sa couleur...
+        db.insert("Project", OnConflictStrategy.IGNORE, contentValues); // ... et je l'insère ou l'ignore si déjà existant.
+    }
+
 
     @After
     public void closeDb() throws Exception {
@@ -63,6 +91,7 @@ public class TaskDaoTest {
 
     @Test
     public void insertAndGetTasks() throws InterruptedException {
+
         this.database.taskDao().insertTask(TASK_DEMO);
         //TEST
         List<Task> taskList = LiveDataTestUtil.getValue(this.database.taskDao().getTaskList());
@@ -75,10 +104,10 @@ public class TaskDaoTest {
     @Test
     public void insertAndUpdateTask() throws InterruptedException {
         this.database.taskDao().insertTask(TASK_DEMO);
-        TASK_DEMO.setId(NEW_TASK_ID);
+        TASK_DEMO.setName("Task xxx");
         this.database.taskDao().updateTask(TASK_DEMO);
         List<Task> tasks = LiveDataTestUtil.getValue(this.database.taskDao().getTaskList());
-        assertEquals(NEW_TASK_ID, tasks.get(0).getId());
+        assertEquals("Task xxx", tasks.get(0).getName());
     }
 
     @Test

@@ -115,7 +115,6 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
 
 
         configureViewModel();
-        //getAllProject();
 
         final Observer<List<Task>> taskListObserver = tasks -> {
             // Update the UI, in this case, a TextView.
@@ -139,14 +138,10 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     }
 
 
-
-
     private void configureViewModel() {
         ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(this);
         this.mMainViewModel = ViewModelProviders.of(this, mViewModelFactory).get(MainViewModel.class);
     }
-
-
 
 
     // ------------- MENU -------------
