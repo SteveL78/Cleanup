@@ -68,7 +68,7 @@ public abstract class CleanUpDatabase extends RoomDatabase {
                 new Project(2, "Projet Lucidia", 0xFFB4CDBA),
                 new Project(3, "Projet Circus", 0xFFA3CED2),
         };
-
+ 
         for (Project project : allProjects) {
             ContentValues contentValues = new ContentValues();
             contentValues.put("id", project.getId());   // Je récupère l'Id du projet ...
@@ -81,9 +81,9 @@ public abstract class CleanUpDatabase extends RoomDatabase {
     private static void prepopulateWithTasks(SupportSQLiteDatabase db) {
         Task[] allTasks = new Task[]{
                 new Task(1, 1, "task 1", new Date().getTime()),
-                new Task(2, 2, "task 2", new Date().getTime()),
-                new Task(3, 3, "task 3", new Date().getTime()),
-                new Task(4, 3, "task 4", new Date().getTime())
+                new Task(2, 2, "task 2", new Date().getTime()+2000),
+                new Task(3, 3, "task 3", new Date().getTime()+3000),
+                new Task(4, 3, "task 4", new Date().getTime()+4000)
         };
 
 

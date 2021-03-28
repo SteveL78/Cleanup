@@ -62,9 +62,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
         this.tasks = tasks;
         this.projects = projects;
         notifyDataSetChanged();
-
     }
-
 
     @NonNull
     @Override

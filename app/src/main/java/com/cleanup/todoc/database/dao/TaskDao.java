@@ -17,7 +17,7 @@ import java.util.List;
 @Dao
 public interface TaskDao {
 
-    @Query("SELECT * FROM Task")
+    @Query("SELECT * FROM Task ORDER BY creationTimestamp ASC")
     LiveData<List<Task>> getTaskList();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
