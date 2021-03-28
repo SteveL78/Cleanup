@@ -68,7 +68,7 @@ public abstract class CleanUpDatabase extends RoomDatabase {
                 new Project(2, "Projet Lucidia", 0xFFB4CDBA),
                 new Project(3, "Projet Circus", 0xFFA3CED2),
         };
- 
+
         for (Project project : allProjects) {
             ContentValues contentValues = new ContentValues();
             contentValues.put("id", project.getId());   // Je récupère l'Id du projet ...
